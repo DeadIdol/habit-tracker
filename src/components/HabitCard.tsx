@@ -1,18 +1,19 @@
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./ui/collapsible"
 import { useState } from "react"
 import { Button } from "./ui/button"
-import { ChevronsUpDown, SquarePen, Trash2 } from "lucide-react"
+import { ChevronsUpDown, SquarePen, Trash2, Check, X, CircleCheckIcon } from "lucide-react"
 import Habit from "@/types/Habit"
 import { useHabits } from "@/context/HabitContext"
 
 interface HabitCardProps {
   habit: Habit,
-  key: number | string
+  key: number | string,
+  date: Date,
 }
 
-export default function HabitCard({ habit }: HabitCardProps) {
+export default function HabitCard({ habit, date }: HabitCardProps) {
   const { habits, setHabits } = useHabits();
-  const [isOpen, setIsOpen] = useState(true)
+  const [isOpen, setIsOpen] = useState(true);
   return (
     <div className="bg-white border rounded-md p-2">
       <Collapsible
@@ -20,9 +21,14 @@ export default function HabitCard({ habit }: HabitCardProps) {
         onOpenChange={setIsOpen}
       >
         { /* Card Header */}
-        <div className="flex">
+        <div className="flex items-center justify-center ">
+
+
+
+
+
           {/* Habit Title */}
-          <h1 className="text-2xl">{habit.title}</h1>
+          <h1 className="text-3xl font-bold">{habit.title}</h1>
 
           {/* Edit Habit Button */}
           <Button variant="ghost" size="icon" className="size-8">
@@ -39,6 +45,7 @@ export default function HabitCard({ habit }: HabitCardProps) {
             <span className="sr-only">Delete Habit</span>
           </Button>
 
+
           {/* Collapse Card Button */}
           <CollapsibleTrigger asChild>
             <Button variant="ghost" size="icon" className="size-8">
@@ -46,11 +53,50 @@ export default function HabitCard({ habit }: HabitCardProps) {
               <span className="sr-only">Toggle</span>
             </Button>
           </CollapsibleTrigger>
+
+          {/* Daily Check Options */}
+          <div className="flex flex-col p-6">
+            <Button variant="ghost" size="icon" className="bg-green-500 hover:bg-green-700"
+              onClick={() => {
+                setHabits(habits.map((h) => {
+                  if (h.id === habit.id) {
+                    return {...habit, 
+                      // log: {...log, }
+                    }
+                  }
+                  else {
+                    return h
+                  }
+                }))
+              }}
+            >
+              <Check />
+              <span className="sr-only">Record Habit Done</span>
+            </Button>
+            <Button variant="ghost" size="icon" className="bg-amber-500 hover:bg-amber-700">
+              <X />
+              <span className="sr-only">Record Habit Not Done</span>
+            </Button>
+            <Button variant="ghost" size="icon" className="bg-red-500 hover:bg-red-700">
+              <X />
+              <span className="sr-only">Record Habit Not Done and Resolution Violated</span>
+            </Button>
+          </div>
         </div>
 
         { /* Card content, collapsible */}
         <CollapsibleContent>
-          <p>{habit.notes}</p>
+          <p>{habit.description}</p>
+          <h2 className="text-2xl">Resolutions:</h2>
+
+          {habit.resolutions ? habit.resolutions.map((r, index) => {
+            return (
+              <div key={index}>
+                <h3 className="text-lg *:font-bold">{r.title}</h3>
+                {r.description}
+              </div>
+            )
+          }) : <></>}
         </CollapsibleContent>
       </Collapsible>
     </div>
