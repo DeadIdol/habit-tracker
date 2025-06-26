@@ -68,13 +68,3 @@ export const defaultHabits: Habit[] = [
 
   }
 ]
-
-
-interface ProgrammaticGoal {
-  title: string;
-  numBreakDaysPerWeek?: number;
-  specificBreakDays?: Day[];
-  isActive: boolean;
-  startDate?: string;
-  endDate?: string;
-}

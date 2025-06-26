@@ -2,7 +2,7 @@ import { useHabits } from "@/context/HabitContext"
 import HabitCard from "./HabitCard";
 import { Collapsible } from "@/components/ui/collapsible";
 import { useState } from "react";
-import { MessageCircleQuestion, HelpCircle } from "lucide-react";
+import { HelpCircle } from "lucide-react";
 import { Button } from "./ui/button";
 import { CollapsibleContent, CollapsibleTrigger } from "@radix-ui/react-collapsible";
 import { Input } from "./ui/input";
@@ -23,8 +23,8 @@ export default function MainTab() {
   console.log(`using toLocaleDateString ${date.toLocaleDateString()}`)
 
   return (
-    <div className="flex flex-col space-y-3">
-      <h1 className="text-4xl">Welcome to Habit Tracker</h1>
+    <div className="flex flex-col items-center space-y-3 ">
+      <h1 className="text-4xl text-center">Welcome to Habit Tracker</h1>
       <Collapsible open={helpOpen} onOpenChange={setHelpOpen}>
         <CollapsibleTrigger asChild>
           <Button size='icon'>
@@ -38,7 +38,7 @@ export default function MainTab() {
         </CollapsibleContent>
       </Collapsible>
 
-      <Input type='date' onChange={(e) => setDateString(e.target.value)}></Input>
+      <Input type='date' onChange={(e) => setDateString(e.target.value)} className="w-min"></Input>
 
       {habits.map((habit) => (
         <HabitCard key={habit.id} habit={habit} date={date} />

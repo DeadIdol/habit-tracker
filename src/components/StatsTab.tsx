@@ -1,3 +1,3 @@
 export default function StatsTab() {
-  return <>View statistics here</>
+  return <div className="w-full">View statistics here</div>
 }
