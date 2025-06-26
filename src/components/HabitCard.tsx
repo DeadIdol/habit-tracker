@@ -1,7 +1,6 @@
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./ui/collapsible"
 import { useState } from "react"
 import { Button } from "./ui/button"
-//import { Textarea } from "./ui/textarea";
 import { ChevronsUpDown, SquarePen, Trash2, Check, X } from "lucide-react"
 import Habit from "@/types/Habit"
 import { useHabits } from "@/context/HabitContext"
@@ -15,6 +14,9 @@ interface HabitCardProps {
 export default function HabitCard({ habit }: HabitCardProps) {
   const { habits, setHabits } = useHabits();
   const [isOpen, setIsOpen] = useState(true);
+
+  const [title, setTitle] = useState(habit.title);
+
   return (
     <div className="flex flex-row">
 
@@ -24,23 +26,29 @@ export default function HabitCard({ habit }: HabitCardProps) {
           onOpenChange={setIsOpen}
         >
           { /* Card Header */}
-          <div className="flex items-center justify-center ">
-
-
-
-
+          <div className="flex justify-center items-start">
 
             {/* Habit Title */}
-            <h1 className="text-3xl font-bold">{habit.title}</h1>
-
-            {/* Edit Habit Button */}
-            <Button variant="ghost" size="icon" className="size-8">
-              <SquarePen />
-              <span className="sr-only">Edit Habit</span>
-            </Button>
+            <textarea className="text-3xl font-bold w-min" 
+              value={title}
+              onChange={e => setTitle(e.target.value)}
+              onBlur={(e) => {
+                setHabits(habits.map(h => {
+                  if (h.id === habit.id) {
+                    return {
+                      ...h,
+                      title: e.target.value
+                    }
+                  }
+                  else {
+                    return h;
+                  }
+                }))
+              }}
+            />
 
             {/* Delete Habit Button */}
-            <Button variant="ghost" size="icon" className="size-8"
+            <Button variant="ghost" size="icon" className="size-8 "
               onClick={() => {
                 setHabits(habits.filter(h => h.id !== habit.id))
               }}>
@@ -51,7 +59,7 @@ export default function HabitCard({ habit }: HabitCardProps) {
 
             {/* Collapse Card Button */}
             <CollapsibleTrigger asChild>
-              <Button variant="ghost" size="icon" className="size-8">
+              <Button variant="ghost" size="icon" className="s">
                 <ChevronsUpDown />
                 <span className="sr-only">Toggle</span>
               </Button>
@@ -62,7 +70,7 @@ export default function HabitCard({ habit }: HabitCardProps) {
 
           { /* Card content, collapsible */}
           <CollapsibleContent>
-            <p>{habit.description}</p>
+            <textarea defaultValue={habit.description}></textarea>
             <h2 className="text-2xl">Resolutions:</h2>
 
             {habit.resolutions ? habit.resolutions.map((r, index) => {
