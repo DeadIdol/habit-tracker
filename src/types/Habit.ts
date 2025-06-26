@@ -19,7 +19,7 @@ export interface Resolution {
 }
 
 
-enum Outcome {
+export enum Outcome {
   RESOLUTION_VIOLATED = -1,
   NOT_DONE = 0,
   DONE = 1

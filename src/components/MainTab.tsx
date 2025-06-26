@@ -8,15 +8,17 @@ import { CollapsibleContent, CollapsibleTrigger } from "@radix-ui/react-collapsi
 import { Input } from "./ui/input";
 
 export default function MainTab() {
-  const { habits } = useHabits();
+  const { habits, setHabits } = useHabits();
   const [helpOpen, setHelpOpen] = useState(false);
-  const [dateString, setDateString] = useState("");
 
   const date = new Date();
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, '0'); // getMonth() is 0-based
   const day = String(date.getDate()).padStart(2, '0');
-  const formattedDate = `${year}-${month}-${day}`;
+
+  const [dateString, setDateString] = useState(`${year}-${month}-${day}`);
+
+
   console.log(habits)
 
   return (
@@ -36,11 +38,23 @@ export default function MainTab() {
       </Collapsible>
 
       <Input type='date' onChange={(e) => setDateString(e.target.value)} className="w-min"></Input>
-
+      <Button
+      onClick={() => {
+        setHabits(
+          [
+          // [{title:"",
+          //   description:"",
+          //   resolutions:[]
+          //   log: 
+          // },
+            
+            ...habits]
+        )
+      }}
+      >New Habit</Button>
       {habits.map((habit) => (
-        <HabitCard key={habit.id} habit={habit} date={date} />
+        <HabitCard key={habit.id} habit={habit} date={dateString} />
       ))}
-
     </div>
   )
 }
