@@ -15,8 +15,6 @@ export default function HabitCard({ habit }: HabitCardProps) {
   const { habits, setHabits } = useHabits();
   const [isOpen, setIsOpen] = useState(true);
 
-  const [title, setTitle] = useState(habit.title);
-
   return (
     <div className="flex flex-row">
 
@@ -30,10 +28,8 @@ export default function HabitCard({ habit }: HabitCardProps) {
 
             {/* Habit Title */}
             <textarea className="text-3xl font-bold w-min" 
-              value={title}
-              onChange={e => setTitle(e.target.value)}
-              onBlur={(e) => {
-                setHabits(habits.map(h => {
+              value={habit.title}
+              onChange={e => setHabits(habits.map(h => {
                   if (h.id === habit.id) {
                     return {
                       ...h,
@@ -43,8 +39,7 @@ export default function HabitCard({ habit }: HabitCardProps) {
                   else {
                     return h;
                   }
-                }))
-              }}
+                }))}              
             />
 
             {/* Delete Habit Button */}
