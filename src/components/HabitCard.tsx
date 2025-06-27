@@ -1,7 +1,7 @@
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./ui/collapsible"
 import { useEffect, useRef, useState } from "react"
 import { Button } from "./ui/button"
-import { ChevronsUpDown, SquarePen, Trash2, Check, X } from "lucide-react"
+import { ChevronsUpDown, Trash2, Check, X } from "lucide-react"
 import Habit, { Outcome } from "@/types/Habit"
 import { useHabits } from "@/context/HabitContext"
 
@@ -32,7 +32,15 @@ export default function HabitCard({ habit, date }: HabitCardProps) {
   return (
     <div className="flex flex-row">
 
-      <div className="bg-white border rounded-md rounded-r-none *:p-2 w-md">
+      <div className={`border rounded-md rounded-r-none *:p-2 w-md
+                      ${habit.log[date] === Outcome.DONE && 'bg-green-100'} 
+                      ${habit.log[date] === Outcome.NOT_DONE && 'bg-amber-100'} 
+                      ${habit.log[date] === Outcome.RESOLUTION_VIOLATED && 'bg-red-100'} 
+                      ${habit.log[date] === Outcome.NA && 'bg-gray-100'} 
+
+
+
+        `}>
         <Collapsible
           open={isOpen}
           onOpenChange={setIsOpen}
@@ -104,7 +112,7 @@ export default function HabitCard({ habit, date }: HabitCardProps) {
 
       {/* Daily Check Options */}
       <div className="flex flex-col">
-        <Button variant="ghost" size="icon" className="bg-green-500 hover:bg-green-700 rounded-l-none"
+        <Button variant="ghost" size={habit.log[date] === Outcome.DONE ? 'lg' : 'icon'} className="bg-green-500 hover:bg-green-700 rounded-l-none"
           onClick={() => {
             setHabits(habits.map((h) => {
               if (h.id === habit.id) {
@@ -122,7 +130,7 @@ export default function HabitCard({ habit, date }: HabitCardProps) {
           <Check />
           <span className="sr-only">Record Habit Done</span>
         </Button>
-        <Button variant="ghost" size="icon" className="bg-amber-500 hover:bg-amber-700 rounded-l-none"
+        <Button variant="ghost" size={habit.log[date] === Outcome.NOT_DONE ? 'lg' : 'icon'} className="bg-amber-500 hover:bg-amber-700 rounded-l-none"
           onClick={() => {
             setHabits(habits.map((h) => {
               if (h.id === habit.id) {
@@ -140,7 +148,7 @@ export default function HabitCard({ habit, date }: HabitCardProps) {
           <X />
           <span className="sr-only">Record Habit Not Done</span>
         </Button>
-        <Button variant="ghost" size="icon" className="bg-red-500 hover:bg-red-700 rounded-l-none"
+        <Button variant="ghost" size={habit.log[date] === Outcome.RESOLUTION_VIOLATED ? 'lg' : 'icon'} className="bg-red-500 hover:bg-red-700 rounded-l-none"
           onClick={() => {
             setHabits(habits.map((h) => {
               if (h.id === habit.id) {
@@ -156,6 +164,23 @@ export default function HabitCard({ habit, date }: HabitCardProps) {
           }}>
           <X />
           <span className="sr-only">Record Habit Not Done and Resolution Violated</span>
+        </Button>
+        <Button variant="ghost" size={habit.log[date] === Outcome.NA ? 'lg' : 'icon'} className="bg-gray-500 hover:bg-gray-700 rounded-l-none"
+          onClick={() => {
+            setHabits(habits.map((h) => {
+              if (h.id === habit.id) {
+                return {
+                  ...h,
+                  log: { ...h.log, [date]: Outcome.NA }
+                }
+              }
+              else {
+                return h
+              }
+            }))
+          }}>
+          
+          <span className="sr-only">Record Not Applicable</span>
         </Button>
       </div>
     </div>

@@ -6,20 +6,12 @@ import { HelpCircle } from "lucide-react";
 import { Button } from "./ui/button";
 import { CollapsibleContent, CollapsibleTrigger } from "@radix-ui/react-collapsible";
 import { Input } from "./ui/input";
+import { getCurrentDateString } from "@/util/date_utils";
 
 export default function MainTab() {
   const { habits, setHabits } = useHabits();
   const [helpOpen, setHelpOpen] = useState(false);
-
-  const date = new Date();
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // getMonth() is 0-based
-  const day = String(date.getDate()).padStart(2, '0');
-
-  const [dateString, setDateString] = useState(`${year}-${month}-${day}`);
-
-
-  console.log(habits)
+  const [dateString, setDateString] = useState(getCurrentDateString());
 
   return (
     <div className="flex flex-col items-center space-y-3 ">
@@ -37,16 +29,17 @@ export default function MainTab() {
         </CollapsibleContent>
       </Collapsible>
 
-      <Input type='date' onChange={(e) => setDateString(e.target.value)} className="w-min"></Input>
+      <Input type='date' value={dateString} onChange={(e) => setDateString(e.target.value)} className="w-min"></Input>
       <Button
       onClick={() => {
         setHabits(
           [
-          // [{title:"",
-          //   description:"",
-          //   resolutions:[]
-          //   log: 
-          // },
+          { id: crypto.randomUUID(),
+            title:"",
+            description:"",
+            resolutions:[],
+            log: {}
+          },
             
             ...habits]
         )
