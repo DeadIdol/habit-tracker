@@ -23,9 +23,7 @@ export default function MainTab() {
           </Button>
         </CollapsibleTrigger>
         <CollapsibleContent>
-          <p>This app is for recording your daily habits. At the end of each day, you click the green check if you've done the habit, and the amber X if you have not. (The red X is for resolutions, which we will address shortly). In the statistics tab, you can see which habits you did each day. The app is designed assuming all habits have a positive valence. So for example, instead of creating a habit ‘Scroll twitter’ create ‘Don’t scroll twitter’. This will make the statistics intuitive: The more green you see, the better. However, habits are not necessarily things you are aiming to do every day. For that, we have Resolutions.
-            A Resolution is simply any rule you are trying to stick to for a habit. For example, on the ‘Read 20m’ habit, you could create a resolution ‘Every weekday’.
-          </p>
+          
         </CollapsibleContent>
       </Collapsible>
 
