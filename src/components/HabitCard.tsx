@@ -17,6 +17,7 @@ export default function HabitCard({ habit, date }: HabitCardProps) {
   const descRef = useRef<HTMLTextAreaElement>(null);
   const titleRef = useRef<HTMLTextAreaElement>(null);
 
+  //Effects to auto-expand editable text areas
   useEffect(() => {
     if (descRef.current) {
       descRef.current.style.height = "auto";
@@ -29,6 +30,21 @@ export default function HabitCard({ habit, date }: HabitCardProps) {
       titleRef.current.style.height = titleRef.current.scrollHeight + "px";
     }
   }, [habit.title, isOpen]);
+
+  function handleLogOutcome(outcome: Outcome) {
+    setHabits(habits.map((h) => {
+      if (h.id === habit.id) {
+        return {
+          ...h,
+          log: { ...h.log, [date]: outcome }
+        }
+      }
+      else {
+        return h
+      }
+    }))
+  }
+
   return (
     <div className="flex flex-row">
 
@@ -113,73 +129,27 @@ export default function HabitCard({ habit, date }: HabitCardProps) {
       {/* Daily Check Options */}
       <div className="flex flex-col">
         <Button variant="ghost" size={habit.log[date] === Outcome.DONE ? 'lg' : 'icon'} className="bg-green-500 hover:bg-green-700 rounded-l-none"
-          onClick={() => {
-            setHabits(habits.map((h) => {
-              if (h.id === habit.id) {
-                return {
-                  ...h,
-                  log: { ...h.log, [date]: Outcome.DONE }
-                }
-              }
-              else {
-                return h
-              }
-            }))
-          }}
+          onClick={() => handleLogOutcome(Outcome.DONE)}
         >
           <Check />
           <span className="sr-only">Record Habit Done</span>
         </Button>
         <Button variant="ghost" size={habit.log[date] === Outcome.NOT_DONE ? 'lg' : 'icon'} className="bg-amber-500 hover:bg-amber-700 rounded-l-none"
-          onClick={() => {
-            setHabits(habits.map((h) => {
-              if (h.id === habit.id) {
-                return {
-                  ...h,
-                  log: { ...h.log, [date]: Outcome.NOT_DONE }
-                }
-              }
-              else {
-                return h
-              }
-            }))
-          }}
+          onClick={() => handleLogOutcome(Outcome.NOT_DONE)}
         >
           <X />
           <span className="sr-only">Record Habit Not Done</span>
         </Button>
         <Button variant="ghost" size={habit.log[date] === Outcome.RESOLUTION_VIOLATED ? 'lg' : 'icon'} className="bg-red-500 hover:bg-red-700 rounded-l-none"
-          onClick={() => {
-            setHabits(habits.map((h) => {
-              if (h.id === habit.id) {
-                return {
-                  ...h,
-                  log: { ...h.log, [date]: Outcome.RESOLUTION_VIOLATED }
-                }
-              }
-              else {
-                return h
-              }
-            }))
-          }}>
+          onClick={() => handleLogOutcome(Outcome.RESOLUTION_VIOLATED)}
+        >
           <X />
           <span className="sr-only">Record Habit Not Done and Resolution Violated</span>
         </Button>
         <Button variant="ghost" size={habit.log[date] === Outcome.NA ? 'lg' : 'icon'} className="bg-gray-500 hover:bg-gray-700 rounded-l-none"
-          onClick={() => {
-            setHabits(habits.map((h) => {
-              if (h.id === habit.id) {
-                return {
-                  ...h,
-                  log: { ...h.log, [date]: Outcome.NA }
-                }
-              }
-              else {
-                return h
-              }
-            }))
-          }}>
-          
+          onClick={() => handleLogOutcome(Outcome.NA)}
+        >
+
           <span className="sr-only">Record Not Applicable</span>
         </Button>
       </div>
