@@ -24,9 +24,8 @@ export default function StatsTab() {
         <span className="border-x">Sunday</span>
         <div className="col-span-8 grid grid-cols-subgrid">
           <span></span>
-          {weekDateStrings.map((d) => {
-            return (<span className="border-x">{d}</span>);
-          })}
+          {weekDateStrings.map((d) =>  (<span key={d} className="border-x">{d}</span>)
+          )}
         </div>
         {habits.map((h) => {
           return (
