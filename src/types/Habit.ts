@@ -41,12 +41,12 @@ export const defaultHabits: Habit[] = [
   },
   {
     id: '3',
-    title: 'Take Meds',
-    description: 'Is Done if I take a total of 6 to 8 pills in the day. Should ideally be 4 on wakeup, 4 at midday.',
+    title: "Don't use twitter ",
+    description: 'Exception allowed on weekends',
     log: {},
     resolutions: [{
       title: 'Every Weekday',
-      description: 'Exception if I work at Coles on a weekday. Manually deactivate this goal for long tolerance breaks.',
+      description: 'Exception if I work at Coles on a weekday. Manually deactivate this goal for long breaks.',
       isActive: true
     }]
 
