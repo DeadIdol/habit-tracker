@@ -30,7 +30,12 @@ export default function StatsTab() {
         {habits.map((h) => {
           return (
             <div className="col-span-8 grid grid-cols-subgrid" key={h.id}>
-              <span className="border-y">{h.title}</span>
+              <span
+                className="border-y truncate"
+                title={h.title}
+              >
+                {h.title}
+              </span>
               {weekDateStrings.map((date) => {
                 return (
                   <span
