@@ -1,5 +1,5 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
-You can use a deployed version at https://habit-tracker-seven-tau.vercel.app/
+You can view a vercel deployment of this app at https://habit-tracker-seven-tau.vercel.app/
 
 ## Usage
 Simple web app to log and review your daily habits. In the 'Daily Habit Check' view, use the coloured tabs
