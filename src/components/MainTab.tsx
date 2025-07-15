@@ -28,6 +28,7 @@ export default function MainTab() {
     (habit: Habit, index: number) => {
       return (
         <HabitCard
+          id={habit.id}
           habit={habit}
           key={habit.id}
           index={index}

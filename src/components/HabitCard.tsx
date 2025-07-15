@@ -12,6 +12,7 @@ import { ItemTypes } from '@/types/ItemTypes'
 
 
 interface HabitCardProps {
+  id: string
   habit: Habit,
   key: number | string,
   date: string,
@@ -25,7 +26,7 @@ interface DragItem {
   type: string
 }
 
-export default function HabitCard({ habit, date, index, moveCard }: HabitCardProps) {
+export default function HabitCard({id, habit, date, index, moveCard }: HabitCardProps) {
   const { habits, setHabits } = useHabits();
   const [isOpen, setIsOpen] = useState(true);
   const descRef = useRef<HTMLTextAreaElement>(null);
@@ -94,7 +95,6 @@ export default function HabitCard({ habit, date, index, moveCard }: HabitCardPro
     },
   })
 
-  const id = habit.id
   const [{ isDragging }, drag] = useDrag({
     type: ItemTypes.HABIT_CARD,
     item: () => {
@@ -105,13 +105,13 @@ export default function HabitCard({ habit, date, index, moveCard }: HabitCardPro
     }),
   })
 
-  const opacity = isDragging ? 0 : 1
+  const opacity = isDragging ? '0' : '1'
 
   console.log("LOG GROUP 1")
   console.log(`isDragging: ${isDragging}`)
   console.log(`opacity: ${opacity}`)
   if (isDragging) {
-    console.log(`Grabbed Habit: id: ${habit.id} title: ${habit.title}`)
+    console.log(`Grabbed Habit: id: ${id} title: ${habit.title}`)
   }
 
 
@@ -133,7 +133,7 @@ export default function HabitCard({ habit, date, index, moveCard }: HabitCardPro
 
   function handleLogOutcome(outcome: Outcome) {
     setHabits(habits.map((h) => {
-      if (h.id === habit.id) {
+      if (h.id === id) {
         return {
           ...h,
           log: { ...h.log, [date]: outcome }
@@ -146,7 +146,7 @@ export default function HabitCard({ habit, date, index, moveCard }: HabitCardPro
   }
 
   return (
-    <div  className={`flex flex-row opacity-${opacity}`} ref={ref} data-handler-id={handlerId}>
+    <div  className={`flex flex-row  opacity-${opacity}`} ref={ref} data-handler-id={handlerId}>
       {/* Drag and Drop handle */}
       <button  className="border rounded-md w-6 place-content-center"><GripVertical /></button>
       
@@ -173,7 +173,7 @@ export default function HabitCard({ habit, date, index, moveCard }: HabitCardPro
               placeholder="Add Title"
               ref={titleRef}
               onChange={e => setHabits(habits.map(h => {
-                if (h.id === habit.id) {
+                if (h.id === id) {
                   return {
                     ...h,
                     title: e.target.value
@@ -188,7 +188,7 @@ export default function HabitCard({ habit, date, index, moveCard }: HabitCardPro
             {/* Delete Habit Button */}
             <Button variant="ghost" size="icon" className="size-8 "
               onClick={() => {
-                setHabits(habits.filter(h => h.id !== habit.id))
+                setHabits(habits.filter(h => h.id !== id))
               }}>
               <Trash2 />
               <span className="sr-only">Delete Habit</span>
@@ -215,7 +215,7 @@ export default function HabitCard({ habit, date, index, moveCard }: HabitCardPro
               ref={descRef}
               onChange={e => {
                 setHabits(habits.map(h => {
-                  if (h.id === habit.id) {
+                  if (h.id === id) {
                     return { ...h, description: e.target.value }
                   }
                   else {
