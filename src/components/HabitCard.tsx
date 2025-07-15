@@ -105,13 +105,13 @@ export default function HabitCard({id, habit, date, index, moveCard }: HabitCard
     }),
   })
 
-  const opacity = isDragging ? '0' : '1'
+  const opacity = isDragging ? 0 : 1
 
-  console.log("LOG GROUP 1")
+  console.log("LOG GROUP 4")
   console.log(`isDragging: ${isDragging}`)
   console.log(`opacity: ${opacity}`)
   if (isDragging) {
-    console.log(`Grabbed Habit: id: ${id} title: ${habit.title}`)
+    console.log(`Grabbed Habit: id: ${id} title: ${habit.title} index: ${index}`)
   }
 
 
@@ -146,7 +146,7 @@ export default function HabitCard({id, habit, date, index, moveCard }: HabitCard
   }
 
   return (
-    <div  className={`flex flex-row  opacity-${opacity}`} ref={ref} data-handler-id={handlerId}>
+    <div  className={`flex flex-row $`} style={{opacity} } ref={ref} data-handler-id={handlerId}>
       {/* Drag and Drop handle */}
       <button  className="border rounded-md w-6 place-content-center"><GripVertical /></button>
       

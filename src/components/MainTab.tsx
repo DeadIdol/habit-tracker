@@ -40,8 +40,6 @@ export default function MainTab() {
 
   return (
     <div className="flex flex-col items-center space-y-3 ">
-
-
       <Input type='date' value={dateString} onChange={(e) => setDateString(e.target.value)} className="w-min"></Input>
       <Button
         onClick={() => {
