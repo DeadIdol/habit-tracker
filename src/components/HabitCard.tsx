@@ -1,117 +1,22 @@
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./ui/collapsible"
 import { useEffect, useRef, useState } from "react"
 import { Button } from "./ui/button"
-import { ChevronsUpDown, Trash2, Check, X, GripVertical } from "lucide-react"
+import { ChevronsUpDown, Trash2, Check, X } from "lucide-react"
 import Habit, { Outcome } from "@/types/Habit"
 import { useHabits } from "@/context/HabitContext"
-
-//Draggable imports:
-import type { Identifier, XYCoord } from 'dnd-core'
-import { useDrag, useDrop, DragPreviewOptions } from 'react-dnd'
-import { ItemTypes } from '@/types/ItemTypes'
-
 
 interface HabitCardProps {
   id: string
   habit: Habit,
   key: number | string,
-  date: string,
-  index: number,
-  moveCard: (dragIndex: number, hoverIndex: number) => void
+  date: string
 }
 
-interface DragItem {
-  index: number
-  id: string
-  type: string
-}
-
-export default function HabitCard({id, habit, date, index, moveCard }: HabitCardProps) {
+export default function HabitCard({ id, habit, date }: HabitCardProps) {
   const { habits, setHabits } = useHabits();
   const [isOpen, setIsOpen] = useState(true);
   const descRef = useRef<HTMLTextAreaElement>(null);
   const titleRef = useRef<HTMLTextAreaElement>(null);
-
-  const ref = useRef<HTMLDivElement>(null) // Card container ref
-  const handleRef = useRef<HTMLButtonElement>(null) // Drag handle ref
-
-  //Drag and drop logic
-  const [{ handlerId }, drop] = useDrop<
-    DragItem,
-    void,
-    { handlerId: Identifier | null }
-  >({
-    accept: ItemTypes.HABIT_CARD,
-    collect(monitor) {
-      return {
-        handlerId: monitor.getHandlerId(),
-      }
-    },
-    hover(item: DragItem, monitor) {
-      if (!ref.current) {
-        return
-      }
-      const dragIndex = item.index
-      const hoverIndex = index
-
-      // Don't replace items with themselves
-      if (dragIndex === hoverIndex) {
-        return
-      }
-
-      // Determine rectangle on screen
-      const hoverBoundingRect = ref.current?.getBoundingClientRect()
-
-      // Get vertical middle
-      const hoverMiddleY =
-        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
-
-      // Determine mouse position
-      const clientOffset = monitor.getClientOffset()
-
-      // Get pixels to the top
-      const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top
-
-      // Only perform the move when the mouse has crossed half of the items height
-      // When dragging downwards, only move when the cursor is below 50%
-      // When dragging upwards, only move when the cursor is above 50%
-
-      // Dragging downwards
-      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-        return
-      }
-
-      // Dragging upwards
-      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-        return
-      }
-
-      // Time to actually perform the action
-      moveCard(dragIndex, hoverIndex)
-
-      // Note: we're mutating the monitor item here!
-      // Generally it's better to avoid mutations,
-      // but it's good here for the sake of performance
-      // to avoid expensive index searches.
-      item.index = hoverIndex
-    },
-  })
-
-  const [{ isDragging }, drag, dragPreview] = useDrag({
-    type: ItemTypes.HABIT_CARD,
-    item: () => {
-      return { id, index }
-    },
-    collect: (monitor) => ({
-      isDragging: monitor.isDragging(),
-    }),
-  })
-
-  const opacity = isDragging ? 0 : 1
-
-  drop(ref) // Only drop on card container
-  drag(handleRef) // Only drag on handle
-  dragPreview(ref) // Show full card as drag preview
 
   //Effects to auto-expand editable text areas
   useEffect(() => {
@@ -142,15 +47,7 @@ export default function HabitCard({id, habit, date, index, moveCard }: HabitCard
   }
 
   return (
-    <div className={`flex flex-row`} style={{opacity}} ref={ref} data-handler-id={handlerId}>
-      {/* Drag and Drop handle */}
-      <button
-        ref={handleRef}
-        className={`border rounded-md w-6 place-content-center ${isDragging ? "cursor-grabbing" : "cursor-grab"}`}
-      >
-        <GripVertical />
-      </button>
-      {/* Main Card Content */}
+    <div className="flex flex-row">
       <div className={`border rounded-md rounded-r-none *:p-2 w-md
                       ${habit.log[date] === Outcome.DONE && 'bg-green-100'} 
                       ${habit.log[date] === Outcome.NOT_DONE && 'bg-amber-100'} 
@@ -222,7 +119,6 @@ export default function HabitCard({id, habit, date, index, moveCard }: HabitCard
           </CollapsibleContent>
         </Collapsible>
       </div>
-
       {/* Outcome Logging Buttons */}
       <div className="flex flex-col">
         <Button variant="ghost" size={habit.log[date] === Outcome.DONE ? 'lg' : 'icon'} className="bg-green-500 hover:bg-green-700 rounded-l-none"
