@@ -7,7 +7,7 @@ import { useHabits } from "@/context/HabitContext"
 
 //Draggable imports:
 import type { Identifier, XYCoord } from 'dnd-core'
-import { useDrag, useDrop } from 'react-dnd'
+import { useDrag, useDrop, DragPreviewOptions } from 'react-dnd'
 import { ItemTypes } from '@/types/ItemTypes'
 
 
@@ -32,8 +32,10 @@ export default function HabitCard({id, habit, date, index, moveCard }: HabitCard
   const descRef = useRef<HTMLTextAreaElement>(null);
   const titleRef = useRef<HTMLTextAreaElement>(null);
 
-  const ref = useRef<HTMLDivElement>(null)
+  const ref = useRef<HTMLDivElement>(null) // Card container ref
+  const handleRef = useRef<HTMLButtonElement>(null) // Drag handle ref
 
+  //Drag and drop logic
   const [{ handlerId }, drop] = useDrop<
     DragItem,
     void,
@@ -95,7 +97,7 @@ export default function HabitCard({id, habit, date, index, moveCard }: HabitCard
     },
   })
 
-  const [{ isDragging }, drag] = useDrag({
+  const [{ isDragging }, drag, dragPreview] = useDrag({
     type: ItemTypes.HABIT_CARD,
     item: () => {
       return { id, index }
@@ -107,15 +109,9 @@ export default function HabitCard({id, habit, date, index, moveCard }: HabitCard
 
   const opacity = isDragging ? 0 : 1
 
-  console.log("LOG GROUP 4")
-  console.log(`isDragging: ${isDragging}`)
-  console.log(`opacity: ${opacity}`)
-  if (isDragging) {
-    console.log(`Grabbed Habit: id: ${id} title: ${habit.title} index: ${index}`)
-  }
-
-
-  drag(drop(ref))
+  drop(ref) // Only drop on card container
+  drag(handleRef) // Only drag on handle
+  dragPreview(ref) // Show full card as drag preview
 
   //Effects to auto-expand editable text areas
   useEffect(() => {
@@ -146,19 +142,20 @@ export default function HabitCard({id, habit, date, index, moveCard }: HabitCard
   }
 
   return (
-    <div  className={`flex flex-row $`} style={{opacity} } ref={ref} data-handler-id={handlerId}>
+    <div className={`flex flex-row`} style={{opacity}} ref={ref} data-handler-id={handlerId}>
       {/* Drag and Drop handle */}
-      <button  className="border rounded-md w-6 place-content-center"><GripVertical /></button>
-      
+      <button
+        ref={handleRef}
+        className={`border rounded-md w-6 place-content-center ${isDragging ? "cursor-grabbing" : "cursor-grab"}`}
+      >
+        <GripVertical />
+      </button>
       {/* Main Card Content */}
       <div className={`border rounded-md rounded-r-none *:p-2 w-md
                       ${habit.log[date] === Outcome.DONE && 'bg-green-100'} 
                       ${habit.log[date] === Outcome.NOT_DONE && 'bg-amber-100'} 
                       ${habit.log[date] === Outcome.RESOLUTION_VIOLATED && 'bg-red-100'} 
                       ${habit.log[date] === Outcome.NA && 'bg-gray-100'} 
-
-
-
         `}>
         <Collapsible
           open={isOpen}
@@ -194,7 +191,6 @@ export default function HabitCard({id, habit, date, index, moveCard }: HabitCard
               <span className="sr-only">Delete Habit</span>
             </Button>
 
-
             {/* Collapse Card Button */}
             <CollapsibleTrigger asChild>
               <Button variant="ghost" size="icon" className="s">
@@ -202,8 +198,6 @@ export default function HabitCard({id, habit, date, index, moveCard }: HabitCard
                 <span className="sr-only">Toggle</span>
               </Button>
             </CollapsibleTrigger>
-
-
           </div>
 
           { /* Card content, collapsible */}
@@ -229,7 +223,7 @@ export default function HabitCard({id, habit, date, index, moveCard }: HabitCard
         </Collapsible>
       </div>
 
-      {/* Daily Check Options */}
+      {/* Outcome Logging Buttons */}
       <div className="flex flex-col">
         <Button variant="ghost" size={habit.log[date] === Outcome.DONE ? 'lg' : 'icon'} className="bg-green-500 hover:bg-green-700 rounded-l-none"
           onClick={() => handleLogOutcome(Outcome.DONE)}
