@@ -1,18 +1,11 @@
 import { useHabits } from "@/context/HabitContext"
 import DraggableHabitCard from "./DraggableHabitCard"
-import HabitCard from "./HabitCard"
 import { useCallback, useState } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { getCurrentDateString } from "@/util/date_utils";
 import Habit from "@/types/Habit";
-
 import update from 'immutability-helper'
-import { Preview } from 'react-dnd-preview'
-import { ItemTypes } from "@/types/ItemTypes";
-import { GripVertical } from "lucide-react";
-
-
 
 export default function MainTab() {
   const { habits, setHabits } = useHabits();
@@ -67,28 +60,6 @@ export default function MainTab() {
           renderCard(habit, i)
         ))}
       </div>
-      <Preview generator={({itemType, item, style}) => {
-        if (itemType !== ItemTypes.HABIT_CARD) return null
-        console.log('preview generated')
-        return (
-          <div style={{...style, boxShadow: "0 4px 16px rgba(0,0,0,0.15)", background: "white", borderRadius: 8, padding: 0, margin: 0}}>
-            <div className="flex flex-row">
-              <button
-                className="border rounded-md w-6 place-content-center cursor-grabbing"
-                style={{marginRight: 0}}
-              >
-                <GripVertical />
-              </button>
-              <HabitCard
-                id={item.id}
-                habit={habits[item.index]}
-                key={item.id}
-                date={dateString}
-              />
-            </div>
-          </div>
-        )
-      }} />
     </div>
   )
 }
