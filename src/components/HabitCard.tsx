@@ -8,7 +8,6 @@ import { useHabits } from "@/context/HabitContext"
 interface HabitCardProps {
   id: string
   habit: Habit,
-  key: number | string,
   date: string
 }
 

@@ -2,6 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import MainTab from "@/components/MainTab";
 import StatsTab from "@/components/StatsTab";
+import { CustomDragLayer } from "@/components/CustomDragLayer";
 
 
 const geistSans = Geist({
@@ -26,7 +27,10 @@ export default function Home() {
           <TabsTrigger value="about">About</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="main"><MainTab /></TabsContent>
+        <TabsContent value="main">
+          <MainTab />
+          <CustomDragLayer />
+        </TabsContent>
         <TabsContent value="stats"><StatsTab /></TabsContent>
         <TabsContent value="about">
           <p className="max-w-prose font-serif">

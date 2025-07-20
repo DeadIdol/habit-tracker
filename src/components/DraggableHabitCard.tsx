@@ -21,7 +21,7 @@ interface DragItem {
   type: string
 }
 
-export default function DraggableHabitCard({ id, habit, key, date, index, moveCard }: DraggableHabitCardProps) {
+export default function DraggableHabitCard({ id, habit, date, index, moveCard }: DraggableHabitCardProps) {
   const ref = useRef<HTMLDivElement>(null)
   const handleRef = useRef<HTMLButtonElement>(null)
 
@@ -71,7 +71,6 @@ export default function DraggableHabitCard({ id, habit, key, date, index, moveCa
       <HabitCard
         id={id}
         habit={habit}
-        key={key}
         date={date}
       />
     </div>
