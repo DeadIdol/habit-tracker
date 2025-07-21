@@ -1,7 +1,7 @@
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./ui/collapsible"
 import { useEffect, useRef, useState } from "react"
 import { Button } from "./ui/button"
-import { ChevronsUpDown, Trash2, Check, X } from "lucide-react"
+import { ChevronsUpDown, Trash2, Check, X, GripVertical } from "lucide-react"
 import Habit, { Outcome } from "@/types/Habit"
 import { useHabits } from "@/context/HabitContext"
 
@@ -9,9 +9,10 @@ interface HabitCardProps {
   habit: Habit,
   key: number | string,
   date: string,
+  dragHandleProps?: React.HTMLAttributes<HTMLDivElement>
 }
 
-export default function HabitCard({ habit, date }: HabitCardProps) {
+export default function HabitCard({ habit, date, dragHandleProps }: HabitCardProps) {
   const { habits, setHabits } = useHabits();
   const [isOpen, setIsOpen] = useState(true);
   const descRef = useRef<HTMLTextAreaElement>(null);
@@ -47,15 +48,20 @@ export default function HabitCard({ habit, date }: HabitCardProps) {
 
   return (
     <div className="flex flex-row">
-
+      {/* Drag handle on the left */}
+      <div
+        className="flex items-center cursor-grab select-none border rounded-md"
+        style={{ minWidth: 24 }}
+        aria-label="Drag handle"
+        {...dragHandleProps}
+      >
+        <GripVertical/>
+      </div>
       <div className={`border rounded-md rounded-r-none *:p-2 w-md
                       ${habit.log[date] === Outcome.DONE && 'bg-green-100'} 
                       ${habit.log[date] === Outcome.NOT_DONE && 'bg-amber-100'} 
                       ${habit.log[date] === Outcome.RESOLUTION_VIOLATED && 'bg-red-100'} 
                       ${habit.log[date] === Outcome.NA && 'bg-gray-100'} 
-
-
-
         `}>
         <Collapsible
           open={isOpen}
