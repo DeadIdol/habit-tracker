@@ -1,17 +1,41 @@
 // HabitContext.tsx
 import React, { createContext, useContext, useState, useEffect } from "react";
-import Habit, {  defaultHabits } from "@/types/Habit"
+import Habit, { defaultHabits } from "@/types/Habit"
+import { Outcome } from "@/types/Habit";
 
 
 type HabitContextType = {
   habits: Habit[];
   setHabits: React.Dispatch<React.SetStateAction<Habit[]>>;
+  setOutcome: (habitId: string, date: string, outcome: Outcome) => void;
 };
 
 const HabitContext = createContext<HabitContextType | undefined>(undefined);
 
 export const HabitProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [habits, setHabits] = useState<Habit[]>(defaultHabits);
+
+  // Update outcome for a specific habit and date
+  const setOutcome = (habitId: string, date: string, outcome: Outcome) => {
+    console.log(`type of outcome ${typeof outcome}`)
+    setHabits(habits.map((h) => {
+      console.log(`function ${habitId} ${date} ${outcome}`)
+      if (h.id === habitId) {
+        console.log(`equals`)
+        return {
+          ...h,
+          log: { ...h.log, [date]: outcome }
+        }
+      }
+      else {
+        return h
+      }
+    }))
+    console.log(`habits after ${habits}`)
+    console.log(habits)
+
+
+  };
 
   // Load from localStorage on mount
   useEffect(() => {
@@ -25,7 +49,7 @@ export const HabitProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   }, [habits]);
 
   return (
-    <HabitContext.Provider value={{ habits, setHabits }}>
+    <HabitContext.Provider value={{ habits, setHabits, setOutcome }}>
       {children}
     </HabitContext.Provider>
   );

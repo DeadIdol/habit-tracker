@@ -14,6 +14,13 @@ export enum Outcome {
   NA
 }
 
+export const outcomeColors: Record<Outcome, string> = {
+  0: 'green',
+  1: 'amber',
+  2: 'red',
+  3: 'grey'
+}
+
 export default interface Habit {
   id: string; 
   title: string;
