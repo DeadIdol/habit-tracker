@@ -8,21 +8,16 @@ export interface Resolution {
 }
 
 export enum Outcome {
-  RESOLUTION_VIOLATED,
-  NOT_DONE,
-  DONE,
-  NA
+  DONE = 'green',
+  NOT_DONE = 'amber',
+  RESOLUTION_VIOLATED = 'red',
+  NA = 'gray',
 }
 
-export const outcomeColors: Record<Outcome, string> = {
-  0: 'green',
-  1: 'amber',
-  2: 'red',
-  3: 'grey'
-}
+
 
 export default interface Habit {
-  id: string; 
+  id: string;
   title: string;
   description: string;
   log: Record<string, Outcome>; // key: date string (e.g. '2025-06-16'), value: Outcome

@@ -4,6 +4,10 @@ import { Button } from "./ui/button"
 import { ChevronsUpDown, Trash2, Check, X, GripVertical } from "lucide-react"
 import Habit, { Outcome } from "@/types/Habit"
 import { useHabits } from "@/context/HabitContext"
+import OutcomeButton from "./OutcomeButton"
+
+// Convert enum to array of values
+const outcomeVals = Object.values(Outcome);
 
 interface HabitCardProps {
   habit: Habit,
@@ -13,7 +17,7 @@ interface HabitCardProps {
 }
 
 export default function HabitCard({ habit, date, dragHandleProps }: HabitCardProps) {
-  const { habits, setHabits } = useHabits();
+  const { habits, setHabits, setOutcome } = useHabits();
   const [isOpen, setIsOpen] = useState(true);
   const descRef = useRef<HTMLTextAreaElement>(null);
   const titleRef = useRef<HTMLTextAreaElement>(null);
@@ -32,20 +36,6 @@ export default function HabitCard({ habit, date, dragHandleProps }: HabitCardPro
     }
   }, [habit.title, isOpen]);
 
-  function handleLogOutcome(outcome: Outcome) {
-    setHabits(habits.map((h) => {
-      if (h.id === habit.id) {
-        return {
-          ...h,
-          log: { ...h.log, [date]: outcome }
-        }
-      }
-      else {
-        return h
-      }
-    }))
-  }
-
   return (
     <div className="flex flex-row">
       {/* Drag handle on the left */}
@@ -55,14 +45,10 @@ export default function HabitCard({ habit, date, dragHandleProps }: HabitCardPro
         aria-label="Drag handle"
         {...dragHandleProps}
       >
-        <GripVertical/>
+        <GripVertical />
       </div>
       <div className={`border rounded-md rounded-r-none *:p-2 w-md
-                      ${habit.log[date] === Outcome.DONE && 'bg-green-100'} 
-                      ${habit.log[date] === Outcome.NOT_DONE && 'bg-amber-100'} 
-                      ${habit.log[date] === Outcome.RESOLUTION_VIOLATED && 'bg-red-100'} 
-                      ${habit.log[date] === Outcome.NA && 'bg-gray-100'} 
-        `}>
+                      bg-${habit.log[date]}-100`}>
         <Collapsible
           open={isOpen}
           onOpenChange={setIsOpen}
@@ -132,32 +118,17 @@ export default function HabitCard({ habit, date, dragHandleProps }: HabitCardPro
         </Collapsible>
       </div>
 
-      {/* Daily Check Options */}
+      {/* Daily Outcome Options */}
       <div className="flex flex-col">
-        <Button variant="ghost" size={habit.log[date] === Outcome.DONE ? 'lg' : 'icon'} className="bg-green-500 hover:bg-green-700 rounded-l-none"
-          onClick={() => handleLogOutcome(Outcome.DONE)}
-        >
-          <Check />
-          <span className="sr-only">Record Habit Done</span>
-        </Button>
-        <Button variant="ghost" size={habit.log[date] === Outcome.NOT_DONE ? 'lg' : 'icon'} className="bg-amber-500 hover:bg-amber-700 rounded-l-none"
-          onClick={() => handleLogOutcome(Outcome.NOT_DONE)}
-        >
-          <X />
-          <span className="sr-only">Record Habit Not Done</span>
-        </Button>
-        <Button variant="ghost" size={habit.log[date] === Outcome.RESOLUTION_VIOLATED ? 'lg' : 'icon'} className="bg-red-500 hover:bg-red-700 rounded-l-none"
-          onClick={() => handleLogOutcome(Outcome.RESOLUTION_VIOLATED)}
-        >
-          <X />
-          <span className="sr-only">Record Habit Not Done and Resolution Violated</span>
-        </Button>
-        <Button variant="ghost" size={habit.log[date] === Outcome.NA ? 'lg' : 'icon'} className="bg-gray-500 hover:bg-gray-700 rounded-l-none"
-          onClick={() => handleLogOutcome(Outcome.NA)}
-        >
-
-          <span className="sr-only">Record Not Applicable</span>
-        </Button>
+        {outcomeVals.map((outcome) => {
+          return (
+            <Button variant="ghost" size={habit.log[date] === outcome ? 'lg' : 'icon'} className={`bg-${outcome}-500 hover:bg-${outcome}-700 rounded-l-none`}
+              onClick={() => setOutcome(habit.id, date, outcome)}
+            >
+              {outcome === Outcome.DONE ? <Check /> : <X />}
+              <span className="sr-only">Record Habit {outcome}</span>
+            </Button>)
+        })}
       </div>
     </div>
 
