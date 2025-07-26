@@ -2,12 +2,11 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./ui/collap
 import { useEffect, useRef, useState } from "react"
 import { Button } from "./ui/button"
 import { ChevronsUpDown, Trash2, Check, X, GripVertical } from "lucide-react"
-import Habit, { Outcome } from "@/types/Habit"
+import Habit, { Outcome, outcomeVals } from "@/types/Habit"
 import { useHabits } from "@/context/HabitContext"
 import OutcomeButton from "./OutcomeButton"
 
 // Convert enum to array of values
-const outcomeVals = Object.values(Outcome);
 
 interface HabitCardProps {
   habit: Habit,

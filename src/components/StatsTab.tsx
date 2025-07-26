@@ -3,13 +3,6 @@ import { getCurrentDateString, getWeekDateStrings } from "@/util/date_utils"
 import { Outcome, outcomeVals } from "@/types/Habit"
 import { useState, useRef, useEffect } from "react"
 import { Input } from "./ui/input"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
-
-
 
 export default function StatsTab() {
   const { habits, setOutcome } = useHabits();
