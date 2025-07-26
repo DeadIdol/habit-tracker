@@ -4,7 +4,6 @@ import { Button } from "./ui/button"
 import { ChevronsUpDown, Trash2, Check, X, GripVertical } from "lucide-react"
 import Habit, { Outcome, outcomeVals } from "@/types/Habit"
 import { useHabits } from "@/context/HabitContext"
-import OutcomeButton from "./OutcomeButton"
 
 // Convert enum to array of values
 
@@ -121,7 +120,7 @@ export default function HabitCard({ habit, date, dragHandleProps }: HabitCardPro
       <div className="flex flex-col">
         {outcomeVals.map((outcome) => {
           return (
-            <Button variant="ghost" size={habit.log[date] === outcome ? 'lg' : 'icon'} className={`bg-${outcome}-500 hover:bg-${outcome}-700 rounded-l-none`}
+            <Button key={outcome} variant="ghost" size={habit.log[date] === outcome ? 'lg' : 'icon'} className={`bg-${outcome}-500 hover:bg-${outcome}-700 rounded-l-none`}
               onClick={() => setOutcome(habit.id, date, outcome)}
             >
               {outcome === Outcome.DONE ? <Check /> : <X />}

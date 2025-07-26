@@ -1,6 +1,6 @@
 import { useHabits } from "@/context/HabitContext"
 import { getCurrentDateString, getWeekDateStrings } from "@/util/date_utils"
-import { Outcome, outcomeVals } from "@/types/Habit"
+import { outcomeVals } from "@/types/Habit"
 import { useState, useRef, useEffect } from "react"
 import { Input } from "./ui/input"
 
