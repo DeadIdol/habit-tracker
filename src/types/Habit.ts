@@ -14,7 +14,7 @@ export enum Outcome {
   NA = 'gray',
 }
 
-
+export const outcomeVals = Object.values(Outcome);
 
 export default interface Habit {
   id: string;

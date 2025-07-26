@@ -1,6 +1,6 @@
 import { useHabits } from "@/context/HabitContext"
 import { getCurrentDateString, getWeekDateStrings } from "@/util/date_utils"
-import { Outcome } from "@/types/Habit"
+import { Outcome, outcomeVals } from "@/types/Habit"
 import { useState, useRef, useEffect } from "react"
 import { Input } from "./ui/input"
 import {
@@ -16,7 +16,6 @@ export default function StatsTab() {
   const [dateString, setDateString] = useState(getCurrentDateString());
   const weekDateStrings: string[] = getWeekDateStrings(dateString)
 
-  // For popup state
   const [popup, setPopup] = useState<{
     habitId: string;
     date: string;
@@ -61,11 +60,7 @@ export default function StatsTab() {
               const outcome = h.log[date];
               return (
                 <span
-                  className={`cursor-pointer ${outcome === Outcome.DONE ? 'bg-green-500' : ''}
-                    ${outcome === Outcome.NOT_DONE ? 'bg-amber-500' : ''}
-                    ${outcome === Outcome.RESOLUTION_VIOLATED ? 'bg-red-500' : ''}
-                    ${outcome === Outcome.NA ? 'bg-gray-500' : ''}
-                    border`}
+                  className={`cursor-pointer bg-${outcome}-500 border`}
                   key={date}
                   onClick={(e) => setPopup({ habitId: h.id, date, anchor: e.currentTarget })}
                   title="Click to change outcome"
@@ -81,7 +76,7 @@ export default function StatsTab() {
       {popup && (
         <div
           ref={popupRef}
-          className="border rounded-md bg-white flex"
+          className="border rounded-md bg-accent flex p-1.5"
           style={{
             position: 'absolute',
             left: popup.anchor?.offsetLeft ?? 0,
@@ -89,21 +84,11 @@ export default function StatsTab() {
             zIndex: 10,
           }}
         >
-          {([
-            Outcome.DONE,
-            Outcome.NOT_DONE,
-            Outcome.RESOLUTION_VIOLATED,
-            Outcome.NA,
-          ] as Outcome[]).map((outcome) => {
-            const color =
-              outcome === Outcome.DONE ? 'bg-green-500'
-              : outcome === Outcome.NOT_DONE ? 'bg-amber-500'
-              : outcome === Outcome.RESOLUTION_VIOLATED ? 'bg-red-500'
-              : 'bg-gray-500';
+          {outcomeVals.map((outcome) => {
             return (
               <button
                 key={outcome}
-                className={`w-8 h-8 rounded-full border ${color}`}
+                className={`w-8 h-8 rounded-full border bg-${outcome}-500`}
                 title={String(outcome).replace('_', ' ')}
                 onClick={() => {
                   setOutcome(popup.habitId, popup.date, outcome);
@@ -112,10 +97,6 @@ export default function StatsTab() {
               />
             );
           })}
-          <button
-            className="ml-2 px-2 py-1 border rounded text-xs"
-            onClick={() => setPopup(null)}
-          >Cancel</button>
         </div>
       )}
     </div>
