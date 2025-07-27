@@ -34,6 +34,10 @@ export default function HabitCard({ habit, date, dragHandleProps }: HabitCardPro
     }
   }, [habit.title, isOpen]);
 
+  console.log(`Outcome: ${habit.log[date]}`)
+  console.log(`Typeof Outcome: ${typeof habit.log[date]}`)
+
+
   return (
     <div className="flex flex-row">
       {/* Drag handle on the left */}
