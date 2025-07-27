@@ -2,8 +2,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import MainTab from "@/components/MainTab";
 import StatsTab from "@/components/StatsTab";
-import TextArea from "@/components/TextArea";
-
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
