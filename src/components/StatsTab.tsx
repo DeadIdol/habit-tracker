@@ -1,6 +1,6 @@
 import { useHabits } from "@/context/HabitContext"
 import { getCurrentDateString, getWeekDateStrings } from "@/util/date_utils"
-import { outcomeVals } from "@/types/Habit"
+import { outcomeVals, outcomeColorMapBold } from "@/types/Outcome"
 import { useState, useRef, useEffect } from "react"
 import { Input } from "./ui/input"
 
@@ -53,7 +53,7 @@ export default function StatsTab() {
               const outcome = h.log[date];
               return (
                 <span
-                  className={`cursor-pointer bg-${outcome}-500 border`}
+                  className={`cursor-pointer border ${outcomeColorMapBold[outcome]}`}
                   key={date}
                   onClick={(e) => setPopup({ habitId: h.id, date, anchor: e.currentTarget })}
                   title="Click to change outcome"
@@ -81,7 +81,7 @@ export default function StatsTab() {
             return (
               <button
                 key={outcome}
-                className={`w-8 h-8 rounded-full border bg-${outcome}-500`}
+                className={`w-8 h-8 rounded-full border ${outcomeColorMapBold[outcome]}`}
                 title={String(outcome).replace('_', ' ')}
                 onClick={() => {
                   setOutcome(popup.habitId, popup.date, outcome);

@@ -3,9 +3,6 @@
 
 @custom-variant dark (&:is(.dark *));
 
-@source inline("{hover:,}bg-{red,green,gray,amber}-{50,{100..900..100},950}");
-
-
 :root {
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);

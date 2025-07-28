@@ -2,9 +2,9 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./ui/collap
 import { useEffect, useRef, useState } from "react"
 import { Button } from "./ui/button"
 import { ChevronsUpDown, Trash2, Check, X, GripVertical } from "lucide-react"
-import Habit, { altMap, Outcome, outcomeColorMap, outcomeVals } from "@/types/Habit"
+import Habit from "@/types/Habit"
+import { Outcome, outcomeColorMapBold, outcomeColorMapPale, outcomeVals} from '@/types/Outcome'
 import { useHabits } from "@/context/HabitContext"
-
 
 // Convert enum to array of values
 
@@ -35,15 +35,8 @@ export default function HabitCard({ habit, date, dragHandleProps }: HabitCardPro
     }
   }, [habit.title, isOpen]);
 
-  console.log(`Outcome for date: ${habit.log[date]}`)
-  console.log(`Typeof Outcome: ${typeof habit.log[date]}`)
-
-  console.log(`Colour for outcome: ${outcomeColorMap[habit.log[date]]}`)
-
-
   return (
     <div className="flex flex-row">
-      <div className={altMap[habit.log[date]] + 'border'}></div>
       {/* Drag handle on the left */}
       <div
         className="flex items-center cursor-grab select-none border rounded-md"
@@ -54,7 +47,7 @@ export default function HabitCard({ habit, date, dragHandleProps }: HabitCardPro
         <GripVertical />
       </div>
       <div className={`border rounded-md rounded-r-none *:p-2 w-md
-                      bg-${outcomeColorMap[habit.log[date]]}-100`}>
+                      ${outcomeColorMapPale[habit.log[date]]}`}>
         <Collapsible
           open={isOpen}
           onOpenChange={setIsOpen}
@@ -128,7 +121,7 @@ export default function HabitCard({ habit, date, dragHandleProps }: HabitCardPro
       <div className="flex flex-col">
         {outcomeVals.map((outcome) => {
           return (
-            <Button key={habit.id + outcome} variant="ghost" size={habit.log[date] === outcome ? 'lg' : 'icon'} className={`bg-${outcomeColorMap[outcome]}-500 hover:bg-${outcomeColorMap[outcome]}-700 rounded-l-none`}
+            <Button key={habit.id + outcome} variant="ghost" size={habit.log[date] === outcome ? 'lg' : 'icon'} className={`${outcomeColorMapBold[outcome]} rounded-l-none`}
               onClick={() => setOutcome(habit.id, date, outcome)}
             >
               {outcome === Outcome.DONE ? <Check /> : <X />}

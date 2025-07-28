@@ -1,7 +1,7 @@
 // HabitContext.tsx
 import React, { createContext, useContext, useState, useEffect } from "react";
 import Habit, { defaultHabits } from "@/types/Habit"
-import { Outcome } from "@/types/Habit";
+import { Outcome } from "@/types/Outcome";
 
 
 type HabitContextType = {
