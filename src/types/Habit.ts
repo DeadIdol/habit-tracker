@@ -8,13 +8,48 @@ export interface Resolution {
 }
 
 export enum Outcome {
-  DONE = 'green',
-  NOT_DONE = 'amber',
-  RESOLUTION_VIOLATED = 'red',
-  NA = 'gray',
+  DONE = 'Done',
+  NOT_DONE = 'Not done',
+  RESOLUTION_VIOLATED = 'Resolution violated',
+  NA = 'Not applicable',
 }
 
 export const outcomeVals = Object.values(Outcome);
+
+export const outcomeColorMap = {
+  'Done': 'green',
+  'Not done': 'amber',
+  'Resolution violated': 'red',
+  'Not applicable': 'gray'
+}
+
+export const outcomeColorMapPale: Record<Outcome, string> = {
+  [Outcome.DONE]: 'bg-green-100',
+  [Outcome.NOT_DONE]: 'bg-amber-100',
+  [Outcome.RESOLUTION_VIOLATED]: 'bg-red-100',
+  [Outcome.NA]: 'bg-gray-100'
+}
+
+export const outcomeColorMapBold: Record<Outcome, string> = {
+  [Outcome.DONE]: 'bg-green-500 hover:bg-green-700',
+  [Outcome.NOT_DONE]: 'bg-amber-500 hover: bg-amber-700',
+  [Outcome.RESOLUTION_VIOLATED]: 'bg-red-500 hover:bg-red-700',
+  [Outcome.NA]: 'bg-gray-500 hover:bg-gray-700'
+}
+
+export const altMap: Record<Outcome, string> = {
+  [Outcome.DONE]: 'bg-green-100',
+  [Outcome.NOT_DONE]: 'amber',
+  [Outcome.RESOLUTION_VIOLATED]: 'red',
+  [Outcome.NA]: 'gray'
+}
+
+// export const outcomeColorMap: Record<Outcome, string> = {
+//   [Outcome.DONE]: 'green',
+//   [Outcome.NOT_DONE]: 'amber',
+//   [Outcome.RESOLUTION_VIOLATED]: 'red',
+//   [Outcome.NA]: 'gray'
+// }
 
 export default interface Habit {
   id: string;

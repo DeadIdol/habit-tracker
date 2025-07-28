@@ -17,11 +17,8 @@ export const HabitProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   // Update outcome for a specific habit and date
   const setOutcome = (habitId: string, date: string, outcome: Outcome) => {
-    console.log(`type of outcome ${typeof outcome}`)
     setHabits(habits.map((h) => {
-      console.log(`function ${habitId} ${date} ${outcome}`)
       if (h.id === habitId) {
-        console.log(`equals`)
         return {
           ...h,
           log: { ...h.log, [date]: outcome }
@@ -31,9 +28,8 @@ export const HabitProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         return h
       }
     }))
-    console.log(`habits after ${habits}`)
-    console.log(habits)
 
+    
 
   };
 
